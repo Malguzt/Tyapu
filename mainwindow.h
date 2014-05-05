@@ -23,6 +23,8 @@ private slots:
 
     void on_Play_clicked();
 
+    void on_Stop_clicked();
+
 private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;

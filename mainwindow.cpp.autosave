@@ -28,7 +28,6 @@ void MainWindow::on_Add_clicked()
 
 void MainWindow::on_Play_clicked()
 {
-//    ui->label->setText(ui->files->selectedItems().at(0)->text().toStdWString());
     player->setMedia(QUrl::fromLocalFile(ui->files->selectedItems().at(0)->text()));
     player->setVolume(100);
     player->play();
