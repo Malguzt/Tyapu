@@ -2,4 +2,5 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     Tyapu-interface \
-    Tyapu-daemon
+    Tyapu-daemon \
+    Tyapu-console
