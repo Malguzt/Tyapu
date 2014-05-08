@@ -10,11 +10,10 @@ class TYAPUINTERFACESHARED_EXPORT Tyapuinterface
 public:
     Tyapuinterface();
     virtual void addSong(QString &path) = 0;
-    virtual QList playList() = 0;
+    virtual QObjectList playList() = 0;
     virtual QString actualSong() = 0;
-    virtual intb actualSongIndex() = 0;
+    virtual int actualSongIndex() = 0;
     virtual bool isMuted() = 0;
-    virtual MediaStatus mediaStatus() = 0;
     virtual int volume() = 0;
     virtual void setVolume(int value) = 0;
     virtual void pause() = 0;
