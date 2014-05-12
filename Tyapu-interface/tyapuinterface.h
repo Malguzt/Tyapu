@@ -23,7 +23,7 @@ public:
     virtual void stop() = 0;
     virtual void next() = 0;
     virtual void previous() = 0;
-    virtual void selectSong() = 0;
+    virtual void selectSong(int index) = 0;
 };
 
 #endif // TYAPUINTERFACE_H

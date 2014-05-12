@@ -30,5 +30,11 @@ int main(int argc, char *argv[])
             std::cout << "***** @———————–—@******\n";
             std::cout << "******* @-@-@-@********\n";
         }
+
+        if(command == "agregar"){
+            std::string path;
+            std::cin >> path;
+            std::cout << "Se agregaron las pistas ubicadas en: " << path << "\n";
+        }
     }
 }
