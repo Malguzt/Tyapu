@@ -1,40 +1,18 @@
+#include <QString>
 #include <iostream>
-#include <string>
-#include <sstream>
+
+#include "consoleui.h"
 
 int main(int argc, char *argv[])
 {
-    std::cout << "Bienvenido a Tyapu, el mejor reproductor de música del NO mercado.\n";
-
     std::string command;
+    ConsoleUI console;
+
+    console.printWelcome();
 
     while(command != "salir"){
+        console.printConsole();
         std::cin >> command;
-
-        if(command == "ayuda"){
-            std::cout << "agregar <ruta>               Agrega de manera recursiva los archivos de una ruta.\n";
-        }
-
-        if(command == "huevoDePascuas"){
-            std::cout << "Acá tenes tu huevo\n";
-            sleep(2);
-            std::cout << "******** @-@-@*********\n";
-            std::cout << "****** @————–—–@*******\n";
-            std::cout << "**** @————————––—@*****\n";
-            std::cout << "*** @——- Felices——@****\n";
-            std::cout << "** @——– Pascuas——–—@***\n";
-            std::cout << "** @——(\\(\\——————–——@***\n";
-            std::cout << "** @——(^.^)—–—————–@***\n";
-            std::cout << "** @—*(..(“)(“).———@***\n";
-            std::cout << "*** @—————————–———@****\n";
-            std::cout << "***** @———————–—@******\n";
-            std::cout << "******* @-@-@-@********\n";
-        }
-
-        if(command == "agregar"){
-            std::string path;
-            std::cin >> path;
-            std::cout << "Se agregaron las pistas ubicadas en: " << path << "\n";
-        }
+        console.runCommand(command);
     }
 }
