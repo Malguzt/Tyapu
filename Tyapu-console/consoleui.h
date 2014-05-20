@@ -13,10 +13,11 @@ public:
     void printHelp();
     void printEasterEgg();
     void runCommand(std::string& command);
-    void add(std::string& path);
-    void play();
 private:
     Tyapuinterface* core;
+    void list();
+    void add(std::string& path);
+    void play();
 };
 
 #endif // CONSOLEUI_H
