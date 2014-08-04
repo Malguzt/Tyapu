@@ -8,6 +8,7 @@ class Core: public Tyapuinterface
 public:
     Core();
     virtual void addSong(std::string &path);
+    virtual void addSong(std::vector<std::string> paths);
     virtual std::string *playList();
     virtual int playListCount();
     virtual std::string actualSong();

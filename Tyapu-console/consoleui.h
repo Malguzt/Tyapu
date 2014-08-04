@@ -18,6 +18,7 @@ private:
     void list();
     void add(std::string& path);
     void play();
+    std::vector<std::string> readFolder(std::string folder);
 };
 
 #endif // CONSOLEUI_H

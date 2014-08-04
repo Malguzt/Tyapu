@@ -26,8 +26,8 @@ HEADERS += \
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Tyapu-interface/release/ -lTyapu-interface
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Tyapu-interface/debug/ -lTyapu-interface
-else:unix: LIBS += -L$$OUT_PWD/../Tyapu-interface/ -lTyapu-interface
+else:unix: LIBS += -L$$OUT_PWD/../Tyapu-interface/ -lTyapu-interface -lboost_system -lboost_filesystem
 
-INCLUDEPATH += $$PWD/../Tyapu-interface
+INCLUDEPATH += $$PWD/../Tyapu-interface /usr/include/boost/
 DEPENDPATH += $$PWD/../Tyapu-interface
 

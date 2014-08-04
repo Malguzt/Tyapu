@@ -1,5 +1,6 @@
 #include <QUrl>
 #include <QMediaPlaylist>
+using namespace std;
 
 #include "core.h"
 
@@ -9,15 +10,26 @@ Core::Core()
     player.setVolume(100);
 }
 
-void Core::addSong(std::string &path)
+void Core::addSong(string &path)
 {
     player.playlist()->addMedia(QUrl::fromLocalFile(QString(path.c_str())));
 }
 
-std::string* Core::playList()
+void Core::addSong(vector<string> paths)
+{
+    QList<QMediaContent> songs;
+    int max = paths.size();
+    for(int i = 0; i < max; i++)
+    {
+        cout << "Se agrega: " << paths[i] << endl;
+        songs.append(QMediaContent(QUrl::fromLocalFile(QString(paths[i].c_str()))));
+    }
+}
+
+string* Core::playList()
 {
     int totalSongs = player.playlist()->mediaCount();
-    std::string* songs = new std::string[totalSongs];
+    string* songs = new string[totalSongs];
 
     for(int i = 0; i < totalSongs; i++)
     {
@@ -32,7 +44,7 @@ int Core::playListCount()
     return 3;
 }
 
-std::string Core::actualSong()
+string Core::actualSong()
 {
     return "Un tema super copado.";
 }
@@ -49,7 +61,7 @@ bool Core::isMuted()
 
 int Core::volume()
 {
-    player.volume();
+    return player.volume();
 }
 
 void Core::setVolume(int value)
@@ -64,6 +76,7 @@ void Core::pause()
 
 void Core::play()
 {
+    player.setVolume(100);
     player.play();
 }
 
@@ -94,5 +107,5 @@ void Core::previous()
 
 void Core::selectSong(int index)
 {
-
+    cout << index << endl;
 }

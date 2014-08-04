@@ -2,7 +2,13 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
+#include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
+#include <vector>
 #include "../Tyapu-daemon/core.h"
+
+using namespace std;
+using namespace boost::algorithm;
 
 ConsoleUI::ConsoleUI()
 {
@@ -11,58 +17,58 @@ ConsoleUI::ConsoleUI()
 
 void ConsoleUI::printWelcome()
 {
-    std::cout << "Bienvenido a Tyapu, el mejor reproductor de música del NO mercado.\n";
-    std::cout << "Escribe 'ayuda' para ver las opciones.\n";
+    cout << "Bienvenido a Tyapu, el mejor reproductor de música del NO mercado.\n";
+    cout << "Escribe 'ayuda' para ver las opciones.\n";
 }
 
 void ConsoleUI::printConsole()
 {
-    std::cout << ">";
+    cout << ">";
 }
 
 void ConsoleUI::printHelp()
 {
-    std::cout << "agregar <ruta>               Agrega de manera recursiva los archivos de una ruta.\n";
-    std::cout << "ejecutar                     Ejecutar el tema actual.\n";
-    std::cout << "pausa                        Pausar ejecución.\n";
-    std::cout << "parar                        Parar ejecución.\n";
-    std::cout << "siguiente                    Pasar de tema.\n";
-    std::cout << "anterior                     Volver al tema anterior.\n";
-    std::cout << "listar                       Ver la lista de temas.\n";
-    std::cout << "silenciar                    Poner en silencio la ejecucón.\n";
-    std::cout << "noSilenciar                  Vuelve a poner tu molesta música.\n";
-    std::cout << "volumen <0-100>              Valor entre 0 y 100 para el volumen.\n";
+    cout << "agregar <ruta>               Agrega de manera recursiva los archivos de una ruta.\n";
+    cout << "ejecutar                     Ejecutar el tema actual.\n";
+    cout << "pausa                        Pausar ejecución.\n";
+    cout << "parar                        Parar ejecución.\n";
+    cout << "siguiente                    Pasar de tema.\n";
+    cout << "anterior                     Volver al tema anterior.\n";
+    cout << "listar                       Ver la lista de temas.\n";
+    cout << "silenciar                    Poner en silencio la ejecucón.\n";
+    cout << "noSilenciar                  Vuelve a poner tu molesta música.\n";
+    cout << "volumen <0-100>              Valor entre 0 y 100 para el volumen.\n";
 
 }
 
 void ConsoleUI::list()
 {
-    std::string* songs = core->playList();
+    string* songs = core->playList();
 
     for(int i = 0; i < core->playListCount(); i++)
     {
-        std::cout << songs[i] << std::endl;
+        cout << songs[i] << endl;
     }
 }
 
 void ConsoleUI::printEasterEgg()
 {
-    std::cout << "Acá tenes tu huevo\n";
+    cout << "Acá tenes tu huevo\n";
     sleep(2);
-    std::cout << "******** @-@-@*********\n";
-    std::cout << "****** @————–—–@*******\n";
-    std::cout << "**** @————————––—@*****\n";
-    std::cout << "*** @——- Felices——@****\n";
-    std::cout << "** @——– Pascuas——–—@***\n";
-    std::cout << "** @——(\\(\\——————–——@***\n";
-    std::cout << "** @——(^.^)—–—————–@***\n";
-    std::cout << "** @—*(..(“)(“).———@***\n";
-    std::cout << "*** @—————————–———@****\n";
-    std::cout << "***** @———————–—@******\n";
-    std::cout << "******* @-@-@-@********\n";
+    cout << "******** @-@-@*********\n";
+    cout << "****** @————–—–@*******\n";
+    cout << "**** @————————––—@*****\n";
+    cout << "*** @——- Felices——@****\n";
+    cout << "** @——– Pascuas——–—@***\n";
+    cout << "** @——(\\(\\——————–——@***\n";
+    cout << "** @——(^.^)—–—————–@***\n";
+    cout << "** @—*(..(“)(“).———@***\n";
+    cout << "*** @—————————–———@****\n";
+    cout << "***** @———————–—@******\n";
+    cout << "******* @-@-@-@********\n";
 }
 
-void ConsoleUI::runCommand(std::string& command)
+void ConsoleUI::runCommand(string& command)
 {
     if(command == "ayuda")
     {
@@ -76,8 +82,8 @@ void ConsoleUI::runCommand(std::string& command)
 
     if(command == "agregar")
     {
-        std::string path;
-        std::getline(std::cin, path);
+        string path;
+        getline(cin, path);
         add(path);
     }
 
@@ -92,13 +98,32 @@ void ConsoleUI::runCommand(std::string& command)
     }
 }
 
-void ConsoleUI::add(std::string& path)
+void ConsoleUI::add(string& path)
 {
-    core->addSong(path);
-    std::cout << "Se agregaron las pistas ubicadas en: " << path << "\n";
+    vector<string> songsPahts;
+    trim(path);
+    songsPahts = readFolder(path);
+
+     core->addSong(songsPahts);
+     cout << "Se agregaron las pistas ubicadas en: " << path << "\n";
 }
 
 void ConsoleUI::play()
 {
     core->play();
+}
+
+vector<string> ConsoleUI::readFolder(string folder)
+{
+    vector<string> songs;
+
+    for(boost::filesystem::recursive_directory_iterator end, dir(folder); dir != end; ++dir)
+    {
+        if(dir->path().extension() == ".mp3" || dir->path().extension() == ".MP3"){
+            songs.push_back(dir->path().filename().string());
+        }
+    }
+
+    return songs;
+
 }
