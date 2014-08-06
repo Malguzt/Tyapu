@@ -96,6 +96,16 @@ void ConsoleUI::runCommand(string& command)
     {
         list();
     }
+
+    if(command == "siguiente")
+    {
+        next();
+    }
+
+    if(command == "anterior")
+    {
+        next();
+    }
 }
 
 void ConsoleUI::add(string& path)
@@ -120,10 +130,15 @@ vector<string> ConsoleUI::readFolder(string folder)
     for(boost::filesystem::recursive_directory_iterator end, dir(folder); dir != end; ++dir)
     {
         if(dir->path().extension() == ".mp3" || dir->path().extension() == ".MP3"){
-            songs.push_back(dir->path().filename().string());
+            songs.push_back(dir->path().string());
         }
     }
 
     return songs;
 
+}
+
+void ConsoleUI::next()
+{
+    core->next();
 }

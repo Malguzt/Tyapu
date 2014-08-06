@@ -11,7 +11,7 @@ class TYAPUINTERFACESHARED_EXPORT Tyapuinterface
 public:
     Tyapuinterface();
     virtual void addSong(std::string &path) = 0;
-    virtual void addSong(std::vector<std::string> paths) = 0;
+    virtual void addSong(std::vector<std::string> &paths) = 0;
     virtual std::string* playList() = 0;
     virtual int playListCount() = 0;
     virtual std::string actualSong() = 0;

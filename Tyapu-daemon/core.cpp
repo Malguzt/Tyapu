@@ -12,28 +12,30 @@ Core::Core()
 
 void Core::addSong(string &path)
 {
-    player.playlist()->addMedia(QUrl::fromLocalFile(QString(path.c_str())));
+    if(player.playlist()->addMedia(QUrl::fromLocalFile(QString(path.c_str()))))
+    {
+        cout << "Se agrega: " << path << endl;
+    }
 }
 
-void Core::addSong(vector<string> paths)
+void Core::addSong(vector<string> &paths)
 {
     QList<QMediaContent> songs;
     int max = paths.size();
     for(int i = 0; i < max; i++)
     {
-        cout << "Se agrega: " << paths[i] << endl;
-        songs.append(QMediaContent(QUrl::fromLocalFile(QString(paths[i].c_str()))));
+        addSong(paths[i]);
     }
 }
 
 string* Core::playList()
 {
-    int totalSongs = player.playlist()->mediaCount();
+    int totalSongs = playListCount();
     string* songs = new string[totalSongs];
 
     for(int i = 0; i < totalSongs; i++)
     {
-        songs[i] = player.playlist()->media(i).resources()[0].url().fileName().toStdString();
+        songs[i] = fileName(i);
     }
 
     return songs;
@@ -41,17 +43,22 @@ string* Core::playList()
 
 int Core::playListCount()
 {
-    return 3;
+    return player.playlist()->mediaCount();
+}
+
+string Core::fileName(int index)
+{
+    return player.playlist()->media(index).resources()[0].url().fileName().toStdString();
 }
 
 string Core::actualSong()
 {
-    return "Un tema super copado.";
+    return fileName(actualSongIndex());
 }
 
 int Core::actualSongIndex()
 {
-    return 3;
+    return player.playlist()->currentIndex();
 }
 
 bool Core::isMuted()
