@@ -87,6 +87,13 @@ void ConsoleUI::runCommand(string& command)
         add(path);
     }
 
+    if(command == "volumen")
+    {
+        string value;
+        getline(cin, value);
+        setVolume(atoi(value.c_str()));
+    }
+
     if(command == "ejecutar")
     {
         play();
@@ -104,7 +111,27 @@ void ConsoleUI::runCommand(string& command)
 
     if(command == "anterior")
     {
-        next();
+        previous();
+    }
+
+    if(command == "parar")
+    {
+        stop();
+    }
+
+    if(command == "pausa")
+    {
+        pause();
+    }
+
+    if(command == "silenciar")
+    {
+        mute();
+    }
+
+    if(command == "noSilenciar")
+    {
+        unmute();
     }
 }
 
@@ -141,4 +168,34 @@ vector<string> ConsoleUI::readFolder(string folder)
 void ConsoleUI::next()
 {
     core->next();
+}
+
+void ConsoleUI::previous()
+{
+    core->previous();
+}
+
+void ConsoleUI::pause()
+{
+    core->pause();
+}
+
+void ConsoleUI::stop()
+{
+    core->pause();
+}
+
+void ConsoleUI::mute()
+{
+    core->mute();
+}
+
+void ConsoleUI::unmute()
+{
+    core->unmute();
+}
+
+void ConsoleUI::setVolume(int newValue)
+{
+    core->setVolume(newValue);
 }

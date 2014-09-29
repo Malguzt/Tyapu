@@ -20,6 +20,12 @@ private:
     void play();
     std::vector<std::string> readFolder(std::string folder);
     void next();
+    void previous();
+    void pause();
+    void stop();
+    void mute();
+    void unmute();
+    void setVolume(int newValue);
 };
 
 #endif // CONSOLEUI_H
