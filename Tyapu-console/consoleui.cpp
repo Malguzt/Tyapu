@@ -182,7 +182,7 @@ void ConsoleUI::pause()
 
 void ConsoleUI::stop()
 {
-    core->pause();
+    core->stop();
 }
 
 void ConsoleUI::mute()
