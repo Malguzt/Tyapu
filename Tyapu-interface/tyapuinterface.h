@@ -10,11 +10,12 @@ class TYAPUINTERFACESHARED_EXPORT Tyapuinterface
 
 public:
     Tyapuinterface();
-    virtual void addSong(std::string &path) = 0;
-    virtual void addSong(std::vector<std::string> &paths) = 0;
-    virtual std::string* playList() = 0;
+    virtual ~Tyapuinterface(){};
+    virtual QList<QString> addSong(QString path) = 0;
+    virtual QList<QString> addSong(QList<QString> paths) = 0;
+    virtual QList<QString> playList() = 0;
     virtual int playListCount() = 0;
-    virtual std::string actualSong() = 0;
+    virtual QString actualSong() = 0;
     virtual int actualSongIndex() = 0;
     virtual bool isMuted() = 0;
     virtual int volume() = 0;
@@ -27,6 +28,7 @@ public:
     virtual void next() = 0;
     virtual void previous() = 0;
     virtual void selectSong(int index) = 0;
+    QString fileName(int index);
 };
 
 #endif // TYAPUINTERFACE_H

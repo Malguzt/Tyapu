@@ -1,18 +1,19 @@
 #include "consoleui.h"
 #include <iostream>
-#include <string>
 #include <unistd.h>
-#include <boost/filesystem.hpp>
-#include <boost/algorithm/string.hpp>
-#include <vector>
+#include <QDirIterator>
 #include "../Tyapu-daemon/core.h"
 
 using namespace std;
-using namespace boost::algorithm;
 
 ConsoleUI::ConsoleUI()
 {
     core = new Core();
+}
+
+ConsoleUI::~ConsoleUI()
+{
+    delete core;
 }
 
 void ConsoleUI::printWelcome()
@@ -43,11 +44,11 @@ void ConsoleUI::printHelp()
 
 void ConsoleUI::list()
 {
-    string* songs = core->playList();
+    QList<QString> songs = core->playList();
 
     for(int i = 0; i < core->playListCount(); i++)
     {
-        cout << songs[i] << endl;
+        cout << songs[i].toStdString() << endl;
     }
 }
 
@@ -82,8 +83,8 @@ void ConsoleUI::runCommand(string& command)
 
     if(command == "agregar")
     {
-        string path;
-        getline(cin, path);
+        QTextStream in;
+        QString path(in.readLine());
         add(path);
     }
 
@@ -135,14 +136,13 @@ void ConsoleUI::runCommand(string& command)
     }
 }
 
-void ConsoleUI::add(string& path)
+void ConsoleUI::add(QString path)
 {
-    vector<string> songsPahts;
-    trim(path);
+    QList<QString> songsPahts;
     songsPahts = readFolder(path);
 
      core->addSong(songsPahts);
-     cout << "Se agregaron las pistas ubicadas en: " << path << "\n";
+     cout << "Se agregaron las pistas ubicadas en: " << path.toStdString() << "\n";
 }
 
 void ConsoleUI::play()
@@ -150,14 +150,22 @@ void ConsoleUI::play()
     core->play();
 }
 
-vector<string> ConsoleUI::readFolder(string folder)
+QList<QString> ConsoleUI::readFolder(QString folder)
 {
-    vector<string> songs;
+    QList<QString> songs;
 
-    for(boost::filesystem::recursive_directory_iterator end, dir(folder); dir != end; ++dir)
+    QDirIterator dirIt(folder, QDirIterator::Subdirectories);
+
+    while(dirIt.hasNext())
     {
-        if(dir->path().extension() == ".mp3" || dir->path().extension() == ".MP3"){
-            songs.push_back(dir->path().string());
+        dirIt.next();
+        QFileInfo info(dirIt.filePath());
+        if(info.isFile())
+        {
+            if(info.suffix() == "MP3" || info.suffix() == "mp3" || info.suffix() == "ogg" || info.suffix() == "wave")
+            {
+                songs.push_back(dirIt.filePath());
+            }
         }
     }
 

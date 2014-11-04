@@ -7,11 +7,12 @@ class Core: public Tyapuinterface
 {
 public:
     Core();
-    virtual void addSong(std::string &path);
-    virtual void addSong(std::vector<std::string> &paths);
-    virtual std::string *playList();
+    virtual ~Core();
+    virtual QList<QString> addSong(QString path);
+    virtual QList<QString> addSong(QList<QString> paths);
+    virtual QList<QString> playList();
     virtual int playListCount();
-    virtual std::string actualSong();
+    virtual QString actualSong();
     virtual int actualSongIndex();
     virtual bool isMuted();
     virtual int volume();
@@ -24,7 +25,7 @@ public:
     virtual void next();
     virtual void previous();
     virtual void selectSong(int index);
-    std::string fileName(int index);
+    QString fileName(int index);
 private:
     QMediaPlayer player;
 };

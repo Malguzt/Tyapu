@@ -8,6 +8,7 @@ class ConsoleUI
 {
 public:
     ConsoleUI();
+    ~ConsoleUI();
     void printWelcome();
     void printConsole();
     void printHelp();
@@ -16,9 +17,9 @@ public:
 private:
     Tyapuinterface* core;
     void list();
-    void add(std::string& path);
+    void add(QString path);
     void play();
-    std::vector<std::string> readFolder(std::string folder);
+    QList<QString> readFolder(QString folder);
     void next();
     void previous();
     void pause();

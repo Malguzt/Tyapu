@@ -1,5 +1,7 @@
 #include <QUrl>
 #include <QMediaPlaylist>
+#include <QFileInfo>
+#include <QDebug>
 using namespace std;
 
 #include "core.h"
@@ -10,32 +12,42 @@ Core::Core()
     player.setVolume(100);
 }
 
-void Core::addSong(string &path)
+Core::~Core()
 {
-    if(player.playlist()->addMedia(QUrl::fromLocalFile(QString(path.c_str()))))
-    {
-        cout << "Se agrega: " << path << endl;
-    }
+
 }
 
-void Core::addSong(vector<string> &paths)
+QList<QString> Core::addSong(QString path)
 {
-    QList<QMediaContent> songs;
+    QFileInfo info(path);
+    if(info.suffix() == "MP3" || info.suffix() == "mp3" || info.suffix() == "ogg" || info.suffix() == "wave")
+    {
+        player.playlist()->addMedia(QUrl::fromLocalFile(path));
+        qDebug() << "Se agrega: " << path << endl;
+    }
+
+    return playList();
+}
+
+QList<QString> Core::addSong(QList<QString> paths)
+{
     int max = paths.size();
     for(int i = 0; i < max; i++)
     {
         addSong(paths[i]);
     }
+
+    return playList();
 }
 
-string* Core::playList()
+QList<QString> Core::playList()
 {
     int totalSongs = playListCount();
-    string* songs = new string[totalSongs];
+    QList<QString> songs;
 
     for(int i = 0; i < totalSongs; i++)
     {
-        songs[i] = fileName(i);
+        songs.push_back(fileName(i));
     }
 
     return songs;
@@ -46,12 +58,12 @@ int Core::playListCount()
     return player.playlist()->mediaCount();
 }
 
-string Core::fileName(int index)
+QString Core::fileName(int index)
 {
-    return player.playlist()->media(index).resources()[0].url().fileName().toStdString();
+    return player.playlist()->media(index).resources()[0].url().fileName();
 }
 
-string Core::actualSong()
+QString Core::actualSong()
 {
     return fileName(actualSongIndex());
 }
