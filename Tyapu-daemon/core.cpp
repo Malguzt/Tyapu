@@ -126,5 +126,5 @@ void Core::previous()
 
 void Core::selectSong(int index)
 {
-    cout << index << endl;
+    player.playlist()->setCurrentIndex(index);
 }

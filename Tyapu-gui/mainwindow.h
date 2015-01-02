@@ -17,14 +17,16 @@ public:
     ~MainWindow();
 
 private slots:
-
     void on_add_clicked();
-
     void on_play_clicked();
+    void on_playlist_doubleClicked(const QModelIndex &index);
+    void on_pause_clicked();
+    void on_stop_clicked();
 
 private:
     Ui::MainWindow *ui;
     Tyapuinterface* core;
+    void addItems(const QList<QString> &items);
 };
 
 #endif // MAINWINDOW_H
