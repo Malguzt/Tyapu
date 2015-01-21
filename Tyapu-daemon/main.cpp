@@ -1,8 +1,13 @@
 #include <QCoreApplication>
+#include "daemon.h"
 
-int main(int argc, char *argv[])
+int main()
 {
-    QCoreApplication a(argc, argv);
+//    QCoreApplication a(argc, argv);
 
-    return a.exec();
+//    return a.exec();
+
+    Daemon app;
+
+    app.start();
 }

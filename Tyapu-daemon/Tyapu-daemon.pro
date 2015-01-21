@@ -5,7 +5,8 @@
 #-------------------------------------------------
 
 QT       += core
-QT       +=multimedia
+QT       += multimedia
+QT       += network
 
 QT       -= gui
 
@@ -17,7 +18,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    core.cpp
+    core.cpp \
+    daemon.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Tyapu-interface/release/ -lTyapu-interface
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Tyapu-interface/debug/ -lTyapu-interface
@@ -27,4 +29,5 @@ INCLUDEPATH += $$PWD/../Tyapu-interface
 DEPENDPATH += $$PWD/../Tyapu-interface
 
 HEADERS += \
-    core.h
+    core.h \
+    daemon.h
