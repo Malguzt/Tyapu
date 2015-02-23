@@ -16,6 +16,13 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
+     <widget class="QLabel" name="messages">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QListWidget" name="playlist"/>
     </item>
     <item>

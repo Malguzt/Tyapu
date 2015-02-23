@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include "daemon.h"
+#include <QTcpServer>
 
 int main()
 {
@@ -7,7 +8,10 @@ int main()
 
 //    return a.exec();
 
-    Daemon app;
+    Daemon d;
+    while(d.isRuning()){
+        d.tcpServer->waitForNewConnection(1500);
+    }
 
-    app.start();
+    return 1;
 }

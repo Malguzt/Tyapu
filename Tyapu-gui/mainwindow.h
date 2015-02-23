@@ -2,7 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtNetwork>
 #include "../Tyapu-interface/tyapuinterface.h"
+
+class QTcpSocket;
+class QNetworkSession;
 
 namespace Ui {
 class MainWindow;
@@ -22,11 +26,16 @@ private slots:
     void on_playlist_doubleClicked(const QModelIndex &index);
     void on_pause_clicked();
     void on_stop_clicked();
+    void displayError(QAbstractSocket::SocketError socketError);
+    void sessionOpened();
 
 private:
     Ui::MainWindow *ui;
     Tyapuinterface* core;
     void addItems(const QList<QString> &items);
+    QTcpSocket *tcpSocket;
+    quint16 blockSize;
+    QNetworkSession *networkSession;
 };
 
 #endif // MAINWINDOW_H

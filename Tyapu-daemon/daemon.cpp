@@ -1,82 +1,53 @@
 #include "daemon.h"
 #include <QDebug>
 #include <QtNetwork>
+#include <QDataStream>
 
 Daemon::Daemon()
-    : tcpServer(0), networkSession(0)
+    : tcpServer(new QTcpServer()), networkSession(0)
 {
-    QNetworkConfigurationManager manager;
-
-    if(manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired)
-    {
-        QSettings settings(QSettings::UserScope, QLatin1String("TyapuDaemon"));
-        settings.beginGroup(QLatin1String("TyapuNetwork"));
-        const QString id = settings.value(QLatin1String("DefaultNetworkConfiguration")).toString();
-        settings.endGroup();
-
-        QNetworkConfiguration config = manager.configurationFromIdentifier(id);
-        if((config.state() & QNetworkConfiguration::Discovered) != QNetworkConfiguration::Discovered)
-        {
-            config = manager.defaultConfiguration();
-        }
-
-        networkSession = new QNetworkSession(config, this);
-        connect(networkSession, SIGNAL(opened()), this, SLOT(sessionOpened()));
-
-        networkSession->open();
-    } else {
-        sessionOpened();
+    connect(tcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));
+    if(!tcpServer->listen(QHostAddress::Any, 50000)){
+        qDebug() << "No escucho nada";
     }
 }
 
-void Daemon::sessionOpened()
+bool Daemon::isRuning()
 {
-    if(networkSession) {
-        QNetworkConfiguration config = networkSession->configuration();
-        QString id;
-
-        if(config.type() == QNetworkConfiguration::UserChoice)
-        {
-            id = networkSession->sessionProperty(QLatin1String("UserChoiceConfiguration")).toString();
-        } else {
-            id = config.identifier();
-        }
-
-        QSettings settings(QSettings::UserScope, QLatin1String("TyapuDaemon"));
-        settings.beginGroup(QLatin1String("TyapuNetwork"));
-        settings.setValue(QLatin1String("DefaultNetworkConfiguration"), id);
-        settings.endGroup();
-    }
-
-    tcpServer = new QTcpServer(this);
-    if(!tcpServer->listen())
-    {
-        qDebug() << "Unable to start the server: " << tcpServer->errorString();
-
-        return;
-    }
-
-    QString ipAddress;
-    QList<QHostAddress> ipAddressList = QNetworkInterface::allAddresses();
-
-    for(int i = 0; i < ipAddress.size(); ++i)
-    {
-        if(ipAddressList.at(i) != QHostAddress::LocalHost && ipAddressList.at(i).toIPv4Address())
-        {
-            ipAddress = ipAddressList.at(i).toString();
-
-            break;
-        }
-    }
-
-    if(ipAddress.isEmpty())
-    {
-        ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
-    }
-
-    qDebug() << "The server is running on\n\nIP: " << ipAddress << endl << "port: " << tcpServer->serverPort() << endl;
+    return true;
 }
 
-void Daemon::start()
+void Daemon::newConnection()
 {
+    QTcpSocket * client = tcpServer->nextPendingConnection();
+
+    while(client->state() == QAbstractSocket::ConnectedState)
+    {
+        client->waitForReadyRead(1500);
+        if(client->bytesAvailable() > 0)
+        {
+            onReadyRead(client);
+        }
+    }
+
+//    connect(client, SIGNAL(finished()), this, SLOT(onFinishedConnection()));
+}
+
+void Daemon::r_play()
+{
+    qDebug() << "Play a song";
+}
+
+void Daemon::onReadyRead(QTcpSocket *client)
+{
+    QDataStream in(client);
+    in.setVersion(QDataStream::Qt_5_3);
+
+    QString cmd;
+
+    in >> cmd;
+
+    if(cmd == "play"){
+        r_play();
+    }
 }
