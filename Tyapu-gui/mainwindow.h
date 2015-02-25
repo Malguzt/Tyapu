@@ -26,8 +26,6 @@ private slots:
     void on_playlist_doubleClicked(const QModelIndex &index);
     void on_pause_clicked();
     void on_stop_clicked();
-    void displayError(QAbstractSocket::SocketError socketError);
-    void sessionOpened();
 
 private:
     Ui::MainWindow *ui;
@@ -36,6 +34,8 @@ private:
     QTcpSocket *tcpSocket;
     quint16 blockSize;
     QNetworkSession *networkSession;
+    void sendToDaemon(QString command);
+    void sendToDaemon(QVariant options);
 };
 
 #endif // MAINWINDOW_H
